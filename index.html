@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudentGPT - Biotechnology & Medical</title>
+
+<style>
+:root {
+  --bg: #000;
+  --header: #007bff;
+  --user: #444;
+  --bot: #1a1a80;
+  --input: #1e1e1e;
+  --text: #fff;
+}
+
+.light {
+  --bg: #f5f5f5;
+  --header: #1976d2;
+  --user: #e0e0e0;
+  --bot: #dbeafe;
+  --input: #ffffff;
+  --text: #000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  background: var(--header);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.header button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 85%;
+  word-break: break-word;
+}
+
+.user {
+  align-self: flex-end;
+  background: var(--user);
+}
+
+.bot {
+  align-self: flex-start;
+  background: var(--bot);
+}
+
+.bot img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #333;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  border: none;
+  border-radius: 14px;
+  padding: 10px;
+  background: var(--input);
+  color: var(--text);
+  font-size: 16px;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+button.send, button.mic {
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+  <div class="header">
+    StudentGPT
+    <div>
+      <button onclick="toggleMode()">🌙</button>
+      <button onclick="clearChat()">New</button>
+    </div>
+  </div>
+
+  <div class="chat-area" id="chat"></div>
+
+  <div class="input-bar">
+    <textarea id="input" rows="1" placeholder="Ask question or type diagram name..."></textarea>
+    <button class="mic" onclick="startMic()">🎤</button>
+    <button class="send" onclick="send()">➤</button>
+  </div>
+</div>
+
+<!-- 🔽 External JS files -->
+<script src="data.js"></script>
+<script src="logic.js"></script>
+
+</body>
+</html>
