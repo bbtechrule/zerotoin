@@ -10,21 +10,26 @@ function addBubble(html, type) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-// ✅ Clean user input for better matching
+// ✅ Clean user input (remove useless words)
 function cleanText(text) {
   return text
     .toLowerCase()
-    .replace(/human|image|diagram|picture|photo|of/g, "")
+    .replace(
+      /human|image|diagram|picture|photo|of|please|show|me|i|want|need|search|like|these/g,
+      ""
+    )
     .trim();
 }
 
-// ✅ Search diagram from array
+// ✅ WORD-BASED diagram search (KEY FIX 🔥)
 function findDiagram(text) {
-  const query = cleanText(text);
+  const words = cleanText(text).split(" ").filter(Boolean);
 
   return diagrams.find(d =>
-    d.name.includes(query) ||
-    d.keywords.some(k => cleanText(k).includes(query))
+    words.some(word =>
+      d.name.includes(word) ||
+      d.keywords.some(k => k.includes(word))
+    )
   );
 }
 
@@ -33,11 +38,10 @@ function send() {
   const textRaw = input.value.trim();
   if (!textRaw) return;
 
-  const text = textRaw.toLowerCase();
   addBubble(textRaw, "user");
 
-  // 🔍 Diagram search
-  const diagram = findDiagram(text);
+  // 🔍 Diagram search FIRST
+  const diagram = findDiagram(textRaw);
 
   if (diagram) {
     addBubble(
@@ -47,8 +51,8 @@ function send() {
     );
 
   // 📘 Q&A search
-  } else if (qa[text]) {
-    addBubble(qa[text], "bot");
+  } else if (qa[textRaw.toLowerCase()]) {
+    addBubble(qa[textRaw.toLowerCase()], "bot");
 
   // ❌ Not found
   } else {
