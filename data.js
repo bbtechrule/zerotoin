@@ -1,17 +1,33 @@
-// ✅ Diagrams object
-// key = diagram name in lowercase
-// value = image URL
-const diagrams = {
-  "heart diagram": "https://www.zerotoin.com/images/heart.png",
-  "brain diagram": "https://www.zerotoin.com/images/brain.png",
-  "plant cell diagram": "https://www.zerotoin.com/images/plant-cell.png",
-  "dna structure": "https://www.zerotoin.com/images/dna.png"
-  // Add more diagrams here...
-};
+// ✅ Diagrams list
+// name = search keyword (lowercase)
+// img = image path
 
-// ✅ QA object (optional)
+const diagrams = [
+  {
+    name: "heart diagram",
+    img: "images/heart.png"
+  },
+  {
+    name: "brain diagram",
+    img: "images/brain.png"
+  },
+  {
+    name: "plant cell diagram",
+    img: "images/plant-cell.png"
+  },
+  {
+    name: "dna structure",
+    img: "images/dna.png"
+  }
+  // 👉 Add more diagrams here
+];
+
+// ✅ Q&A object (optional)
 const qa = {
-  "what is biotechnology": "Biotechnology is the use of living systems and organisms to develop products.",
-  "define cell": "A cell is the basic structural, functional, and biological unit of all living organisms."
-  // Add more Q&A here...
+  "what is biotechnology":
+    "Biotechnology is the use of living systems and organisms to develop products.",
+
+  "define cell":
+    "A cell is the basic structural, functional, and biological unit of all living organisms."
 };
+  
