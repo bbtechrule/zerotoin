@@ -95,7 +95,7 @@ html, body {
 
 .bot img {
   width: 100%;
-  max-width: 300px;
+  max-width: 320px;
   border-radius: 12px;
   margin-top: 8px;
 }
@@ -144,16 +144,19 @@ button.send, button.mic {
     </div>
   </div>
 
+  <!-- ✅ Chat Area -->
   <div class="chat-area" id="chat"></div>
 
+  <!-- ✅ Input -->
   <div class="input-bar">
-    <textarea id="input" rows="1" placeholder="Ask question or type diagram name..."></textarea>
+    <textarea id="input" rows="1"
+      placeholder="Ask question or type diagram name like: human heart image"></textarea>
     <button class="mic" onclick="startMic()">🎤</button>
     <button class="send" onclick="send()">➤</button>
   </div>
 </div>
 
-<!-- External JS files -->
+<!-- ✅ JS files (ORDER IMPORTANT) -->
 <script src="data.js"></script>
 <script src="logic.js"></script>
 
