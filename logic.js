@@ -1,7 +1,7 @@
 const chat = document.getElementById("chat");
 const input = document.getElementById("input");
 
-// Add a chat bubble
+// ✅ Add chat bubble
 function addBubble(html, type) {
   const div = document.createElement("div");
   div.className = "bubble " + type;
@@ -10,7 +10,25 @@ function addBubble(html, type) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-// Send message
+// ✅ Clean user input for better matching
+function cleanText(text) {
+  return text
+    .toLowerCase()
+    .replace(/human|image|diagram|picture|photo|of/g, "")
+    .trim();
+}
+
+// ✅ Search diagram from array
+function findDiagram(text) {
+  const query = cleanText(text);
+
+  return diagrams.find(d =>
+    d.name.includes(query) ||
+    d.keywords.some(k => cleanText(k).includes(query))
+  );
+}
+
+// ✅ Send message
 function send() {
   const textRaw = input.value.trim();
   if (!textRaw) return;
@@ -18,20 +36,21 @@ function send() {
   const text = textRaw.toLowerCase();
   addBubble(textRaw, "user");
 
-  // Diagram search
-  const diagramKey = Object.keys(diagrams).find(d => text.includes(d));
-  if (diagramKey) {
+  // 🔍 Diagram search
+  const diagram = findDiagram(text);
+
+  if (diagram) {
     addBubble(
-      `<b>${diagramKey.toUpperCase()}</b><br>
-       <img src="${diagrams[diagramKey]}" alt="${diagramKey} diagram">`,
+      `<b>${diagram.name.toUpperCase()}</b><br><br>
+       <img src="${diagram.img}" alt="${diagram.name} diagram">`,
       "bot"
     );
 
-  // QA search
+  // 📘 Q&A search
   } else if (qa[text]) {
     addBubble(qa[text], "bot");
 
-  // Not found
+  // ❌ Not found
   } else {
     addBubble("❌ No answer or diagram found.", "bot");
   }
@@ -39,29 +58,33 @@ function send() {
   input.value = "";
 }
 
-// Clear chat
+// ✅ Clear chat
 function clearChat() {
   chat.innerHTML = "";
 }
 
-// Toggle dark/light mode
+// ✅ Toggle dark/light mode
 function toggleMode() {
   document.body.classList.toggle("light");
 }
 
-// Microphone input
+// ✅ Microphone input
 function startMic() {
-  if (!('webkitSpeechRecognition' in window)) {
+  if (!("webkitSpeechRecognition" in window)) {
     alert("Microphone not supported");
     return;
   }
+
   const rec = new webkitSpeechRecognition();
   rec.lang = "en-IN";
   rec.start();
-  rec.onresult = e => input.value += e.results[0][0].transcript;
+
+  rec.onresult = e => {
+    input.value += e.results[0][0].transcript;
+  };
 }
 
-// Auto-expand textarea
+// ✅ Auto-expand textarea
 input.addEventListener("input", () => {
   input.style.height = "auto";
   input.style.height = input.scrollHeight + "px";
