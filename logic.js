@@ -10,27 +10,47 @@ function addBubble(html, type) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-// ✅ Clean user input (remove useless words)
+// ✅ Clean user input (very important)
 function cleanText(text) {
   return text
     .toLowerCase()
+    .replace(/[^a-z\s]/g, "")
     .replace(
-      /human|image|diagram|picture|photo|of|please|show|me|i|want|need|search|like|these/g,
+      /\b(human|image|diagram|picture|photo|of|please|show|me|i|want|need|search|like|these)\b/g,
       ""
     )
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-// ✅ WORD-BASED diagram search (KEY FIX 🔥)
+// ✅ STRONG diagram search (FIXED 🔥)
 function findDiagram(text) {
   const words = cleanText(text).split(" ").filter(Boolean);
 
-  return diagrams.find(d =>
-    words.some(word =>
-      d.name.includes(word) ||
-      d.keywords.some(k => k.includes(word))
-    )
-  );
+  // if user types just "heart"
+  if (words.length === 1) {
+    return diagrams.find(d => d.name === words[0]);
+  }
+
+  // sentence-based matching
+  for (let d of diagrams) {
+    const cleanName = cleanText(d.name);
+
+    // match name
+    for (let w of words) {
+      if (cleanName.includes(w)) return d;
+    }
+
+    // match keywords
+    for (let k of d.keywords) {
+      const cleanKeyword = cleanText(k);
+      for (let w of words) {
+        if (cleanKeyword.includes(w)) return d;
+      }
+    }
+  }
+
+  return null;
 }
 
 // ✅ Send message
