@@ -1,25 +1,29 @@
 // ✅ Diagrams list
-// name = search keyword (lowercase)
+// name = main keyword (lowercase)
+// keywords = extra search terms
 // img = image path
 
 const diagrams = [
   {
-    name: "heart diagram",
+    name: "heart",
+    keywords: ["heart diagram", "human heart", "heart image", "image of heart"],
     img: "images/heart.png"
   },
   {
-    name: "brain diagram",
+    name: "brain",
+    keywords: ["brain diagram", "human brain", "brain image"],
     img: "images/brain.png"
   },
   {
-    name: "plant cell diagram",
+    name: "plant cell",
+    keywords: ["plant cell diagram", "cell image", "plant cell image"],
     img: "images/plant-cell.png"
   },
   {
-    name: "dna structure",
+    name: "dna",
+    keywords: ["dna structure", "dna diagram", "dna image"],
     img: "images/dna.png"
   }
-  // 👉 Add more diagrams here
 ];
 
 // ✅ Q&A object (optional)
@@ -30,4 +34,3 @@ const qa = {
   "define cell":
     "A cell is the basic structural, functional, and biological unit of all living organisms."
 };
-  
