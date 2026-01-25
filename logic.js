@@ -1,3 +1,6 @@
+// ✅ DEBUG: check if diagrams array is loaded
+console.log(diagrams);
+
 const chat = document.getElementById("chat");
 const input = document.getElementById("input");
 
@@ -10,11 +13,11 @@ function addBubble(html, type) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-// ✅ Clean user input (very important)
+// ✅ Clean user input (remove useless words)
 function cleanText(text) {
   return text
     .toLowerCase()
-    .replace(/[^a-z\s]/g, "")
+    .replace(/[^a-z\s]/g, "") // remove symbols
     .replace(
       /\b(human|image|diagram|picture|photo|of|please|show|me|i|want|need|search|like|these)\b/g,
       ""
@@ -23,16 +26,16 @@ function cleanText(text) {
     .trim();
 }
 
-// ✅ STRONG diagram search (FIXED 🔥)
+// ✅ STRONG word-based diagram search
 function findDiagram(text) {
   const words = cleanText(text).split(" ").filter(Boolean);
 
-  // if user types just "heart"
+  // single-word search
   if (words.length === 1) {
     return diagrams.find(d => d.name === words[0]);
   }
 
-  // sentence-based matching
+  // sentence-based search
   for (let d of diagrams) {
     const cleanName = cleanText(d.name);
 
