@@ -9,17 +9,46 @@
 body {
     margin: 0;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
     background: #f5f5f5;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top header */
+.header {
+    height: 55px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Menu button */
+.menu-btn {
+    width: 30px;
+    cursor: pointer;
+}
+
+.menu-btn span {
+    display: block;
+    height: 4px;       /* thickness */
+    background: #333;
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+/* Empty chat area (diagram view) */
+.chat-area {
+    flex: 1;
 }
 
 /* Chat input container */
 .chat-box {
     width: 100%;
     max-width: 420px;
+    margin: 0 auto;
     padding: 10px;
     background: #ffffff;
     border-top: 1px solid #ddd;
@@ -66,6 +95,19 @@ body {
 
 <body>
 
+<!-- Header with menu -->
+<div class="header">
+    <div class="menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<!-- Empty chat area (just for view) -->
+<div class="chat-area"></div>
+
+<!-- Bottom chat input -->
 <div class="chat-box">
     <div class="chat-input">
         <textarea rows="1" placeholder="Type a message..."></textarea>
