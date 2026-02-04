@@ -3,271 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat UI Dark</title>
+<title>Diagram Viewer</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow-x: hidden;
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: #e5e7eb;
+:root{
+  --bg:#f4f4f4;
+  --text:#000;
+  --box:#fff;
+}
+.dark{
+  --bg:#121212;
+  --text:#fff;
+  --box:#1e1e1e;
 }
 
-/* App layout */
-.app {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
 }
 
-/* Header */
-.header {
-    height: 55px;
-    background: #020617;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    border-bottom: 1px solid #1e293b;
-    flex-shrink: 0;
+header{
+  padding:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--box);
 }
 
-/* Menu button */
-.menu-btn {
-    width: 30px;
-    cursor: pointer;
+main{
+  flex:1;
+  padding:12px;
+  overflow:auto;
 }
 
-.menu-btn span {
-    display: block;
-    height: 4px;
-    background: #e5e7eb;
-    margin: 5px 0;
-    border-radius: 2px;
+img{
+  max-width:100%;
+  border-radius:10px;
+  margin-top:10px;
 }
 
-/* Side menu */
-.side-menu {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 250px;
-    height: 100%;
-    background: #020617;
-    padding: 20px;
-    transition: left 0.3s ease;
-    z-index: 1000;
+.controls{
+  display:flex;
+  gap:8px;
 }
 
-.side-menu a {
-    display: block;
-    color: #e5e7eb;
-    text-decoration: none;
-    padding: 14px 0;
-    border-bottom: 1px solid #1e293b;
+footer{
+  padding:10px;
+  background:var(--box);
+  display:flex;
+  gap:10px;
 }
 
-.side-menu a:hover {
-    color: #10a37f;
+input{
+  flex:1;
+  padding:10px;
+  font-size:16px;
 }
 
-/* Overlay */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    z-index: 999;
-}
-
-/* Chat area */
-.chat-area {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-}
-
-/* Message bubble */
-.message {
-    background: #020617;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    max-width: 90%;
-    word-wrap: break-word;
-}
-
-.message img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-top: 8px;
-    border: 1px solid #1e293b;
-}
-
-/* Chat box fixed bottom */
-.chat-box {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #020617;
-    border-top: 1px solid #1e293b;
-    padding: 10px;
-}
-
-.chat-box-inner {
-    max-width: 420px;
-    margin: 0 auto;
-}
-
-/* Chat input */
-.chat-input {
-    display: flex;
-    align-items: center;
-    background: #020617;
-    border-radius: 25px;
-    padding: 8px;
-    border: 1px solid #1e293b;
-}
-
-.chat-input textarea {
-    flex: 1;
-    border: none;
-    outline: none;
-    resize: none;
-    padding: 10px;
-    border-radius: 20px;
-    font-size: 15px;
-    background: transparent;
-    color: #e5e7eb;
-}
-
-/* Send button */
-.send-btn {
-    border: none;
-    background: #10a37f;
-    color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.send-btn:hover {
-    background: #0e8e6d;
+button{
+  padding:10px 14px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<header>
+  <b>Diagram Search</b>
+  <div class="controls">
+    <button onclick="toggleDark()">🌙</button>
+    <button onclick="changeSize(1)">A+</button>
+    <button onclick="changeSize(-1)">A-</button>
+  </div>
+</header>
 
-<!-- Side Menu -->
-<div class="side-menu" id="menu">
-    <a href="index.html">🏠 Home</a>
-    <a href="privacy.html">📄 Privacy Policy</a>
-    <a href="contact.html">📧 Contact</a>
-</div>
+<main id="output">
+  <p>Type diagram name like: <b>kidney</b></p>
+</main>
 
-<!-- Overlay -->
-<div class="overlay" id="overlay"></div>
-
-<!-- Header -->
-<div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</div>
-
-<!-- Chat Area -->
-<div class="chat-area" id="chatArea"></div>
-
-</div>
-
-<!-- Chat Input -->
-<div class="chat-box">
-    <div class="chat-box-inner">
-        <div class="chat-input">
-            <textarea id="userInput" rows="1" placeholder="Type a message..."></textarea>
-            <button class="send-btn" onclick="sendMessage()">➤</button>
-        </div>
-    </div>
-</div>
+<footer>
+  <input id="text" placeholder="Type diagram name..." />
+  <button onclick="showDiagram()">Send</button>
+</footer>
 
 <script>
-const chatArea = document.getElementById("chatArea");
-const input = document.getElementById("userInput");
+let fontSize = 16;
 
-/* Diagram keyword → image mapping */
-const diagramMap = {
-    "heart": "images/heart.png",
-    "kidney": "images/kidney.png",
-    "brain": "images/brain.png",
-    "neuron": "images/neuron.png",
-    "dna": "images/dna.png"
+const diagrams = {
+  "kidney": "images/kidney.png"
+  // add more like:
+  // "heart": "images/heart.png"
 };
 
-function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
+function showDiagram(){
+  const val = document.getElementById("text").value.toLowerCase().trim();
+  const out = document.getElementById("output");
 
-    // Show user message
-    const userMsg = document.createElement("div");
-    userMsg.className = "message";
-    userMsg.textContent = text;
-    chatArea.appendChild(userMsg);
-
-    const lowerText = text.toLowerCase();
-
-    // Check for diagram keywords
-    for (let key in diagramMap) {
-        if (lowerText.includes(key)) {
-            const imgMsg = document.createElement("div");
-            imgMsg.className = "message";
-
-            const img = document.createElement("img");
-            img.src = diagramMap[key];
-            img.alt = key + " diagram";
-
-            imgMsg.appendChild(img);
-            chatArea.appendChild(imgMsg);
-            break;
-        }
-    }
-
-    input.value = "";
-    chatArea.scrollTop = chatArea.scrollHeight;
+  if(diagrams[val]){
+    out.innerHTML = `
+      <h3>${val.toUpperCase()} Diagram</h3>
+      <img src="${diagrams[val]}" alt="${val} diagram">
+    `;
+  }else{
+    out.innerHTML = "<p>❌ Diagram not found</p>";
+  }
 }
 
-/* Enter to send */
-input.addEventListener("keydown", function(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-/* Menu toggle */
-function toggleMenu() {
-    const menu = document.getElementById("menu");
-    const overlay = document.getElementById("overlay");
-
-    if (menu.style.left === "0px") {
-        menu.style.left = "-100%";
-        overlay.style.display = "none";
-    } else {
-        menu.style.left = "0";
-        overlay.style.display = "block";
-    }
+function toggleDark(){
+  document.body.classList.toggle("dark");
 }
 
-overlay.onclick = toggleMenu;
+function changeSize(v){
+  fontSize += v;
+  document.body.style.fontSize = fontSize + "px";
+}
 </script>
 
 </body>
