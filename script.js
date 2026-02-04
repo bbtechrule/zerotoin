@@ -1,11 +1,14 @@
-function sendMessage() {
-  const input = document.getElementById("messageInput");
-  const chatBox = document.getElementById("chat-box");
+function send() {
+  const input = document.getElementById("msg");
+  const chat = document.getElementById("chatBox");
 
-  if (input.value.trim() === "") return;
+  if (!input.value.trim()) return;
 
-  const messageDiv = document.createElement("div");
-  messageDiv.className = "message";
-  messageDiv.textContent = input.value;
+  const div = document.createElement("div");
+  div.className = "msg";
+  div.innerText = input.value;
 
-  chatBox.append
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  input.value = "";
+}
