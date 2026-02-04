@@ -4,6 +4,9 @@ function send() {
 
   if (!input.value.trim()) return;
 
+  const placeholder = document.querySelector(".placeholder");
+  if (placeholder) placeholder.remove();
+
   const div = document.createElement("div");
   div.className = "msg";
   div.innerText = input.value;
