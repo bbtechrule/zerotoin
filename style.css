@@ -5,17 +5,17 @@
 
 body {
   margin: 0;
-  background: #020617;
+  background: #000;
   display: flex;
   justify-content: center;
 }
 
-/* MOBILE FIRST */
+/* APP CONTAINER */
 .app {
   width: 100%;
   max-width: 420px;
   height: 100vh;
-  background: #0f172a;
+  background: linear-gradient(180deg, #020617, #020617);
   display: flex;
   flex-direction: column;
 }
@@ -23,16 +23,25 @@ body {
 /* CHAT AREA */
 .chat-box {
   flex: 1;
-  padding: 12px;
+  padding: 16px;
   overflow-y: auto;
+  color: white;
 }
 
+/* FIRST VIEW TEXT */
+.placeholder {
+  margin-top: 40%;
+  text-align: center;
+  opacity: 0.5;
+  font-size: 16px;
+}
+
+/* MESSAGE */
 .msg {
   background: #1e293b;
   padding: 10px 14px;
-  border-radius: 12px;
-  margin-bottom: 8px;
-  color: white;
+  border-radius: 14px;
+  margin-bottom: 10px;
   max-width: 85%;
 }
 
@@ -42,36 +51,34 @@ body {
   padding: 10px;
   gap: 8px;
   background: #020617;
+  border-top: 1px solid #1e293b;
 }
 
 input {
   flex: 1;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   outline: none;
   background: #1e293b;
   color: white;
+  font-size: 16px;
 }
 
 button {
   padding: 0 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   background: #22c55e;
   font-size: 18px;
   cursor: pointer;
 }
 
-/* 🖥️ DESKTOP MODE ONLY */
+/* DESKTOP MODE */
 @media (min-width: 900px) {
   .app {
     max-width: 900px;
     border-radius: 16px;
     margin: 20px;
-  }
-
-  body {
-    background: #000;
   }
 }
