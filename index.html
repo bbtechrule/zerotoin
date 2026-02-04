@@ -33,18 +33,78 @@ body {
 
 .menu-btn span {
     display: block;
-    height: 4px;       /* thickness */
+    height: 4px;
     background: #333;
     margin: 5px 0;
     border-radius: 2px;
 }
 
-/* Empty chat area (diagram view) */
+/* Side menu */
+.menu {
+    position: fixed;
+    top: 55px;
+    left: -220px;
+    width: 220px;
+    height: 100%;
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+    padding: 15px;
+    transition: left 0.3s ease;
+}
+
+/* Show menu */
+.menu.active {
+    left: 0;
+}
+
+/* Toggle row */
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+}
+
+/* Switch */
+.switch {
+    position: relative;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #ccc;
+    border-radius: 20px;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+
+input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+/* Chat area */
 .chat-area {
     flex: 1;
 }
 
-/* Chat input container */
+/* Chat input */
 .chat-box {
     width: 100%;
     max-width: 420px;
@@ -54,7 +114,6 @@ body {
     border-top: 1px solid #ddd;
 }
 
-/* Input area */
 .chat-input {
     display: flex;
     align-items: center;
@@ -63,19 +122,16 @@ body {
     padding: 8px;
 }
 
-/* Textbox */
 .chat-input textarea {
     flex: 1;
     border: none;
     outline: none;
     resize: none;
     padding: 10px;
-    border-radius: 20px;
     font-size: 15px;
     background: transparent;
 }
 
-/* Send button */
 .send-btn {
     border: none;
     background: #10a37f;
@@ -86,34 +142,46 @@ body {
     font-size: 16px;
     cursor: pointer;
 }
-
-.send-btn:hover {
-    background: #0e8e6d;
-}
 </style>
 </head>
 
 <body>
 
-<!-- Header with menu -->
+<!-- Header -->
 <div class="header">
-    <div class="menu-btn">
+    <div class="menu-btn" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
     </div>
 </div>
 
-<!-- Empty chat area (just for view) -->
+<!-- Side menu -->
+<div class="menu" id="menu">
+    <div class="toggle-row">
+        <span>Dark Mode</span>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+        </label>
+    </div>
+</div>
+
 <div class="chat-area"></div>
 
-<!-- Bottom chat input -->
+<!-- Chat input -->
 <div class="chat-box">
     <div class="chat-input">
         <textarea rows="1" placeholder="Type a message..."></textarea>
         <button class="send-btn">➤</button>
     </div>
 </div>
+
+<script>
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>
