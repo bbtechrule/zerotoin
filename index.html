@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Message Image App</title>
+  <meta charset="UTF-8">
+  <title>ChatGPT Style Chat</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <input type="text" id="message" placeholder="Type your message">
-    <button onclick="sendMessage()">Send</button>
+  <div class="chat-container">
+    <div id="chat-box" class="chat-box"></div>
 
-    <!-- Image will appear here -->
-    <div id="output"></div>
+    <div class="input-area">
+      <input type="text" id="messageInput" placeholder="Send a message..." />
+      <button onclick="sendMessage()">➤</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
