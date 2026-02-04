@@ -1,15 +1,11 @@
 function sendMessage() {
-  const msg = document.getElementById("message").value.toLowerCase();
-  const output = document.getElementById("output");
+  const input = document.getElementById("messageInput");
+  const chatBox = document.getElementById("chat-box");
 
-  let imgSrc = "images/default.png";
+  if (input.value.trim() === "") return;
 
-  if (msg.includes("hello")) {
-    imgSrc = "images/hello.jpg";
-  } 
-  else if (msg.includes("happy")) {
-    imgSrc = "images/happy.png";
-  }
+  const messageDiv = document.createElement("div");
+  messageDiv.className = "message";
+  messageDiv.textContent = input.value;
 
-  output.innerHTML = `<img src="${imgSrc}" alt="result image">`;
-}
+  chatBox.append
