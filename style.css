@@ -1,27 +1,63 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
 body {
-  font-family: Arial;
-  background: #f4f4f4;
+  margin: 0;
+  background: #0f172a;
+  color: white;
 }
 
-.container {
-  width: 300px;
-  margin: 50px auto;
-  text-align: center;
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
+.chat-box {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.message {
+  background: #1e293b;
+  padding: 10px 14px;
+  border-radius: 10px;
   margin-bottom: 10px;
+  max-width: 80%;
 }
 
-button {
-  width: 100%;
+.input-area {
+  display: flex;
   padding: 10px;
-  cursor: pointer;
+  background: #020617;
+  border-top: 1px solid #1e293b;
 }
 
-img {
-  margin-top: 15px;
-  width: 100%;
+.input-area input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #1e293b;
+  color: white;
+  font-size: 16px;
+}
+
+.input-area button {
+  margin-left: 10px;
+  padding: 0 18px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #22c55e;
+  color: black;
+}
+
+.input-area button:hover {
+  background: #16a34a;
 }
