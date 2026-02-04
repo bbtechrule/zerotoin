@@ -10,16 +10,14 @@
 
 <div class="app">
 
-  <!-- CHAT AREA -->
+  <!-- CHAT AREA (ONLY THIS SCROLLS) -->
   <div class="chat-box" id="chatBox">
-    <div class="placeholder">
-      Start typing below 👇
-    </div>
+    <div class="placeholder">Type your message below 👇</div>
   </div>
 
-  <!-- INPUT BAR (VISIBLE FIRST) -->
+  <!-- FIXED INPUT BAR -->
   <div class="input-area">
-    <input type="text" id="msg" placeholder="Message..." />
+    <textarea id="msg" rows="1" placeholder="Message..."></textarea>
     <button onclick="send()">➤</button>
   </div>
 
