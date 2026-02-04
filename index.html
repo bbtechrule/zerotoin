@@ -6,14 +6,21 @@
 <title>Chat UI Dark</title>
 
 <style>
-body {
+html, body {
     margin: 0;
-    height: 100vh;
-    background: #0f172a;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
     font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+/* App layout */
+.app {
     display: flex;
     flex-direction: column;
-    color: #e5e7eb;
+    height: 100vh;
 }
 
 /* Header */
@@ -24,6 +31,7 @@ body {
     align-items: center;
     padding: 0 15px;
     border-bottom: 1px solid #1e293b;
+    flex-shrink: 0;
 }
 
 /* Menu button */
@@ -44,12 +52,12 @@ body {
 .side-menu {
     position: fixed;
     top: 0;
-    left: -260px;
+    left: -100%;
     width: 250px;
     height: 100%;
     background: #020617;
     padding: 20px;
-    transition: 0.3s;
+    transition: left 0.3s ease;
     z-index: 1000;
 }
 
@@ -57,7 +65,7 @@ body {
     display: block;
     color: #e5e7eb;
     text-decoration: none;
-    padding: 12px 0;
+    padding: 14px 0;
     border-bottom: 1px solid #1e293b;
 }
 
@@ -69,7 +77,7 @@ body {
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     display: none;
     z-index: 999;
 }
@@ -77,19 +85,44 @@ body {
 /* Chat area */
 .chat-area {
     flex: 1;
+    padding: 10px;
+    overflow-y: auto;
 }
 
-/* Chat input box */
-.chat-box {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
+/* Message bubble */
+.message {
+    background: #020617;
     padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 90%;
+    word-wrap: break-word;
+}
+
+.message img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 8px;
+    border: 1px solid #1e293b;
+}
+
+/* Chat box fixed bottom */
+.chat-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background: #020617;
     border-top: 1px solid #1e293b;
+    padding: 10px;
 }
 
-/* Input */
+.chat-box-inner {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+/* Chat input */
 .chat-input {
     display: flex;
     align-items: center;
@@ -131,6 +164,8 @@ body {
 
 <body>
 
+<div class="app">
+
 <!-- Side Menu -->
 <div class="side-menu" id="menu">
     <a href="index.html">🏠 Home</a>
@@ -138,6 +173,7 @@ body {
     <a href="contact.html">📧 Contact</a>
 </div>
 
+<!-- Overlay -->
 <div class="overlay" id="overlay"></div>
 
 <!-- Header -->
@@ -150,31 +186,88 @@ body {
 </div>
 
 <!-- Chat Area -->
-<div class="chat-area"></div>
+<div class="chat-area" id="chatArea"></div>
+
+</div>
 
 <!-- Chat Input -->
 <div class="chat-box">
-    <div class="chat-input">
-        <textarea rows="1" placeholder="Type a message..."></textarea>
-        <button class="send-btn">➤</button>
+    <div class="chat-box-inner">
+        <div class="chat-input">
+            <textarea id="userInput" rows="1" placeholder="Type a message..."></textarea>
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
     </div>
 </div>
 
 <script>
+const chatArea = document.getElementById("chatArea");
+const input = document.getElementById("userInput");
+
+/* Diagram keyword → image mapping */
+const diagramMap = {
+    "heart": "images/heart.png",
+    "kidney": "images/kidney.png",
+    "brain": "images/brain.png",
+    "neuron": "images/neuron.png",
+    "dna": "images/dna.png"
+};
+
+function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Show user message
+    const userMsg = document.createElement("div");
+    userMsg.className = "message";
+    userMsg.textContent = text;
+    chatArea.appendChild(userMsg);
+
+    const lowerText = text.toLowerCase();
+
+    // Check for diagram keywords
+    for (let key in diagramMap) {
+        if (lowerText.includes(key)) {
+            const imgMsg = document.createElement("div");
+            imgMsg.className = "message";
+
+            const img = document.createElement("img");
+            img.src = diagramMap[key];
+            img.alt = key + " diagram";
+
+            imgMsg.appendChild(img);
+            chatArea.appendChild(imgMsg);
+            break;
+        }
+    }
+
+    input.value = "";
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+/* Enter to send */
+input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+/* Menu toggle */
 function toggleMenu() {
     const menu = document.getElementById("menu");
     const overlay = document.getElementById("overlay");
 
     if (menu.style.left === "0px") {
-        menu.style.left = "-260px";
+        menu.style.left = "-100%";
         overlay.style.display = "none";
     } else {
-        menu.style.left = "0px";
+        menu.style.left = "0";
         overlay.style.display = "block";
     }
 }
 
-document.getElementById("overlay").onclick = toggleMenu;
+overlay.onclick = toggleMenu;
 </script>
 
 </body>
