@@ -10,30 +10,28 @@ body {
   justify-content: center;
 }
 
-/* APP CONTAINER */
+/* APP WRAPPER */
 .app {
   width: 100%;
   max-width: 420px;
   height: 100vh;
-  background: linear-gradient(180deg, #020617, #020617);
-  display: flex;
-  flex-direction: column;
+  background: #020617;
+  position: relative;
 }
 
-/* CHAT AREA */
+/* CHAT SCROLL AREA */
 .chat-box {
-  flex: 1;
+  height: calc(100vh - 64px);
   padding: 16px;
   overflow-y: auto;
   color: white;
 }
 
-/* FIRST VIEW TEXT */
+/* PLACEHOLDER */
 .placeholder {
   margin-top: 40%;
   text-align: center;
   opacity: 0.5;
-  font-size: 16px;
 }
 
 /* MESSAGE */
@@ -45,17 +43,23 @@ body {
   max-width: 85%;
 }
 
-/* INPUT BAR */
+/* FIXED INPUT BAR */
 .input-area {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 420px;
   display: flex;
-  padding: 10px;
   gap: 8px;
+  padding: 10px;
   background: #020617;
   border-top: 1px solid #1e293b;
 }
 
-input {
+/* TEXTAREA AUTO-GROW */
+textarea {
   flex: 1;
+  resize: none;
   padding: 12px;
   border-radius: 12px;
   border: none;
@@ -63,10 +67,15 @@ input {
   background: #1e293b;
   color: white;
   font-size: 16px;
+  line-height: 1.4;
+  max-height: 90px; /* ~3 lines */
+  overflow-y: auto;
 }
 
+/* SEND BUTTON FIXED SIZE */
 button {
-  padding: 0 16px;
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
   border: none;
   background: #22c55e;
@@ -74,11 +83,12 @@ button {
   cursor: pointer;
 }
 
-/* DESKTOP MODE */
+/* DESKTOP */
 @media (min-width: 900px) {
   .app {
     max-width: 900px;
-    border-radius: 16px;
-    margin: 20px;
+  }
+  .input-area {
+    max-width: 900px;
   }
 }
