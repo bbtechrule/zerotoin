@@ -204,20 +204,24 @@ html, body {
 const chatArea = document.getElementById("chatArea");
 const input = document.getElementById("userInput");
 
-/* Diagram keyword → image mapping */
+/* DIAGRAM KEYWORD → IMAGE PATH */
 const diagramMap = {
     "heart": "images/heart.png",
     "kidney": "images/kidney.png",
     "brain": "images/brain.png",
     "neuron": "images/neuron.png",
-    "dna": "images/dna.png"
+    "dna": "images/dna.png",
+
+    /* PLANT CELL */
+    "plant cell": "images/plant-cell.png",
+    "plant cell diagram": "images/plant-cell.png"
 };
 
 function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    // Show user message
+    /* User message */
     const userMsg = document.createElement("div");
     userMsg.className = "message";
     userMsg.textContent = text;
@@ -225,17 +229,15 @@ function sendMessage() {
 
     const lowerText = text.toLowerCase();
 
-    // Check for diagram keywords
+    /* Diagram check */
     for (let key in diagramMap) {
         if (lowerText.includes(key)) {
             const imgMsg = document.createElement("div");
             imgMsg.className = "message";
-
-            const img = document.createElement("img");
-            img.src = diagramMap[key];
-            img.alt = key + " diagram";
-
-            imgMsg.appendChild(img);
+            imgMsg.innerHTML = `
+                <strong>${key.toUpperCase()}</strong><br>
+                <img src="${diagramMap[key]}" alt="${key} diagram">
+            `;
             chatArea.appendChild(imgMsg);
             break;
         }
@@ -245,7 +247,7 @@ function sendMessage() {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-/* Enter to send */
+/* Enter key to send */
 input.addEventListener("keydown", function(e) {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
