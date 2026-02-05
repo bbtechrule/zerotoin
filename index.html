@@ -29,6 +29,7 @@ html, body {
     background: #020617;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 15px;
     border-bottom: 1px solid #1e293b;
     flex-shrink: 0;
@@ -46,6 +47,12 @@ html, body {
     background: #e5e7eb;
     margin: 5px 0;
     border-radius: 2px;
+}
+
+/* 🎥 Video icon */
+.video-icon {
+    font-size: 22px;
+    cursor: pointer;
 }
 
 /* Side menu */
@@ -67,10 +74,6 @@ html, body {
     text-decoration: none;
     padding: 14px 0;
     border-bottom: 1px solid #1e293b;
-}
-
-.side-menu a:hover {
-    color: #10a37f;
 }
 
 /* Overlay */
@@ -96,7 +99,6 @@ html, body {
     margin: 10px 0;
     border-radius: 10px;
     max-width: 90%;
-    word-wrap: break-word;
 }
 
 .message img {
@@ -106,7 +108,7 @@ html, body {
     border: 1px solid #1e293b;
 }
 
-/* Chat box fixed bottom */
+/* Chat box fixed bottom (UNCHANGED) */
 .chat-box {
     position: fixed;
     bottom: 0;
@@ -122,7 +124,7 @@ html, body {
     margin: 0 auto;
 }
 
-/* Chat input */
+/* Chat input (UNCHANGED) */
 .chat-input {
     display: flex;
     align-items: center;
@@ -144,7 +146,7 @@ html, body {
     color: #e5e7eb;
 }
 
-/* Send button */
+/* Send button (UNCHANGED) */
 .send-btn {
     border: none;
     background: #10a37f;
@@ -156,8 +158,55 @@ html, body {
     cursor: pointer;
 }
 
-.send-btn:hover {
-    background: #0e8e6d;
+/* 🎥 VIDEO PAGE */
+.video-panel {
+    display: none;
+    flex: 1;
+    background: #020617;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.video-search {
+    display: flex;
+    gap: 8px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.video-search input {
+    flex: 1;
+    padding: 10px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    color: #e5e7eb;
+    border-radius: 20px;
+}
+
+.video-search button {
+    background: #10a37f;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+.video-results {
+    max-width: 600px;
+    margin: 15px auto 0;
+}
+
+.video-results video {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #1e293b;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
 }
 </style>
 </head>
@@ -177,12 +226,24 @@ html, body {
 <div class="overlay" id="overlay"></div>
 
 <!-- Header -->
-<div class="header">
+<div class="header" id="header">
     <div class="menu-btn" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
     </div>
+
+    <!-- 🎥 Video Icon -->
+    <div class="video-icon" onclick="openVideoPage()">🎥</div>
+</div>
+
+<!-- 🎥 Video Page -->
+<div class="video-panel" id="videoPanel">
+    <div class="video-search">
+        <input type="text" id="videoInput" placeholder="Search video...">
+        <button onclick="searchVideo()">🔍</button>
+    </div>
+    <div class="video-results" id="videoResults"></div>
 </div>
 
 <!-- Chat Area -->
@@ -190,8 +251,8 @@ html, body {
 
 </div>
 
-<!-- Chat Input -->
-<div class="chat-box">
+<!-- Chat Input (UNCHANGED) -->
+<div class="chat-box" id="chatBox">
     <div class="chat-box-inner">
         <div class="chat-input">
             <textarea id="userInput" rows="1" placeholder="Type a message..."></textarea>
@@ -204,28 +265,29 @@ html, body {
 const chatArea = document.getElementById("chatArea");
 const input = document.getElementById("userInput");
 
-/* DIAGRAM KEYWORD → IMAGE PATH */
+/* IMAGE MAP (UNCHANGED) */
 const diagramMap = {
     "heart": "images/heart.png",
     "kidney": "images/kidney.png",
     "microscopes": "images/microscopes.png",
     "brain": "images/brain.png",
     "neuron": "images/neuron.png",
-
-    // PLANT CELL
     "plant cell": "images/plant-cell.png",
     "plant cell diagram": "images/plant-cell.png",
-
-    // ANIMAL CELL
     "animal cell": "images/animal-cell.png",
     "animal cell diagram": "images/animal-cell.png"
 };
 
+/* VIDEO MAP */
+const videoMap = {
+    "plant cell": "video/plant-cell.mp4"
+};
+
+/* SEND MESSAGE (UNCHANGED LOGIC) */
 function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    /* User message */
     const userMsg = document.createElement("div");
     userMsg.className = "message";
     userMsg.textContent = text;
@@ -233,7 +295,6 @@ function sendMessage() {
 
     const lowerText = text.toLowerCase();
 
-    /* Diagram check */
     for (let key in diagramMap) {
         if (lowerText.includes(key)) {
             const imgMsg = document.createElement("div");
@@ -251,7 +312,7 @@ function sendMessage() {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-/* Enter key to send */
+/* ENTER TO SEND (UNCHANGED) */
 input.addEventListener("keydown", function(e) {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -259,7 +320,48 @@ input.addEventListener("keydown", function(e) {
     }
 });
 
-/* Menu toggle */
+/* 🎥 OPEN VIDEO PAGE */
+function openVideoPage() {
+    history.pushState({ page: "video" }, "", "#video");
+    showVideoPage();
+}
+
+function showVideoPage() {
+    document.getElementById("chatArea").classList.add("hidden");
+    document.getElementById("chatBox").classList.add("hidden");
+    document.getElementById("videoPanel").style.display = "block";
+}
+
+function showHomePage() {
+    document.getElementById("chatArea").classList.remove("hidden");
+    document.getElementById("chatBox").classList.remove("hidden");
+    document.getElementById("videoPanel").style.display = "none";
+}
+
+/* MOBILE BACK BUTTON */
+window.addEventListener("popstate", () => {
+    showHomePage();
+});
+
+/* SEARCH VIDEO */
+function searchVideo() {
+    const query = document.getElementById("videoInput").value.toLowerCase();
+    const container = document.getElementById("videoResults");
+
+    if (!videoMap[query]) {
+        alert("Video not found");
+        return;
+    }
+
+    const video = document.createElement("video");
+    video.src = videoMap[query];
+    video.controls = true;
+    video.preload = "metadata"; // no autoplay
+
+    container.prepend(video);
+}
+
+/* MENU */
 function toggleMenu() {
     const menu = document.getElementById("menu");
     const overlay = document.getElementById("overlay");
@@ -277,4 +379,4 @@ overlay.onclick = toggleMenu;
 </script>
 
 </body>
-                                         </html>
+</html>
