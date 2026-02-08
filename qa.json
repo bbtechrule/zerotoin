@@ -1,0 +1,13 @@
+{
+  "resistor": "Resistor (R): A resistor opposes the flow of electric current and converts electrical energy into heat. Unit: Ohm (Ω). V–I Relation: V = IR.",
+
+  "inductor": "Inductor (L): An inductor stores energy in the form of a magnetic field. Unit: Henry (H). V–I Relation: V = L (di/dt).",
+
+  "capacitor": "Capacitor (C): A capacitor stores energy in the form of an electric field. Unit: Farad (F). V–I Relation: I = C (dV/dt).",
+
+  "ohms law": "Ohm’s Law: Voltage across a conductor is directly proportional to current. V = IR.",
+
+  "kirchhoffs current law": "KCL: The algebraic sum of currents at a node is zero.",
+
+  "kirchhoffs voltage law": "KVL: The algebraic sum of voltages around any closed loop is zero."
+}
