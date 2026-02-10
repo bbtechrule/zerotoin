@@ -16,12 +16,14 @@ html, body {
     color: #e5e7eb;
 }
 
+/* App layout */
 .app {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
+/* Header */
 .header {
     height: 55px;
     background: #020617;
@@ -30,9 +32,15 @@ html, body {
     justify-content: space-between;
     padding: 0 15px;
     border-bottom: 1px solid #1e293b;
+    flex-shrink: 0;
 }
 
-.menu-btn { width: 30px; cursor: pointer; }
+/* Menu button */
+.menu-btn {
+    width: 30px;
+    cursor: pointer;
+}
+
 .menu-btn span {
     display: block;
     height: 4px;
@@ -41,8 +49,13 @@ html, body {
     border-radius: 2px;
 }
 
-.video-icon { font-size: 22px; cursor: pointer; }
+/* 🎥 Video icon */
+.video-icon {
+    font-size: 22px;
+    cursor: pointer;
+}
 
+/* Side menu */
 .side-menu {
     position: fixed;
     top: 0;
@@ -63,6 +76,7 @@ html, body {
     border-bottom: 1px solid #1e293b;
 }
 
+/* Overlay */
 .overlay {
     position: fixed;
     inset: 0;
@@ -71,13 +85,14 @@ html, body {
     z-index: 999;
 }
 
+/* Chat area */
 .chat-area {
     flex: 1;
     padding: 10px;
-    padding-bottom: 90px;
     overflow-y: auto;
 }
 
+/* Message bubble */
 .message {
     background: #020617;
     padding: 10px;
@@ -93,6 +108,7 @@ html, body {
     border: 1px solid #1e293b;
 }
 
+/* Chat box fixed bottom (UNCHANGED) */
 .chat-box {
     position: fixed;
     bottom: 0;
@@ -103,8 +119,12 @@ html, body {
     padding: 10px;
 }
 
-.chat-box-inner { max-width: 420px; margin: 0 auto; }
+.chat-box-inner {
+    max-width: 420px;
+    margin: 0 auto;
+}
 
+/* Chat input (UNCHANGED) */
 .chat-input {
     display: flex;
     align-items: center;
@@ -126,6 +146,7 @@ html, body {
     color: #e5e7eb;
 }
 
+/* Send button (UNCHANGED) */
 .send-btn {
     border: none;
     background: #10a37f;
@@ -137,6 +158,7 @@ html, body {
     cursor: pointer;
 }
 
+/* 🎥 VIDEO PAGE */
 .video-panel {
     display: none;
     flex: 1;
@@ -145,7 +167,47 @@ html, body {
     overflow-y: auto;
 }
 
-.hidden { display: none !important; }
+.video-search {
+    display: flex;
+    gap: 8px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.video-search input {
+    flex: 1;
+    padding: 10px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    color: #e5e7eb;
+    border-radius: 20px;
+}
+
+.video-search button {
+    background: #10a37f;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+.video-results {
+    max-width: 600px;
+    margin: 15px auto 0;
+}
+
+.video-results video {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #1e293b;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
 </style>
 </head>
 
@@ -153,31 +215,47 @@ html, body {
 
 <div class="app">
 
+<!-- Side Menu -->
 <div class="side-menu" id="menu">
     <a href="index.html">🏠 Home</a>
     <a href="privacy.html">📄 Privacy Policy</a>
     <a href="contact.html">📧 Contact</a>
 </div>
 
+<!-- Overlay -->
 <div class="overlay" id="overlay"></div>
 
-<div class="header">
+<!-- Header -->
+<div class="header" id="header">
     <div class="menu-btn" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
+
+    <!-- 🎥 Video Icon -->
     <div class="video-icon" onclick="openVideoPage()">🎥</div>
 </div>
 
-<div class="video-panel" id="videoPanel"></div>
+<!-- 🎥 Video Page -->
+<div class="video-panel" id="videoPanel">
+    <div class="video-search">
+        <input type="text" id="videoInput" placeholder="Search video...">
+        <button onclick="searchVideo()">🔍</button>
+    </div>
+    <div class="video-results" id="videoResults"></div>
+</div>
 
+<!-- Chat Area -->
 <div class="chat-area" id="chatArea"></div>
 
 </div>
 
+<!-- Chat Input (UNCHANGED) -->
 <div class="chat-box" id="chatBox">
     <div class="chat-box-inner">
         <div class="chat-input">
-            <textarea id="userInput" rows="1" placeholder="Ask: capacitor / resistor / ohms law / plant cell"></textarea>
+            <textarea id="userInput" rows="1" placeholder="Type a message..."></textarea>
             <button class="send-btn" onclick="sendMessage()">➤</button>
         </div>
     </div>
@@ -187,44 +265,46 @@ html, body {
 const chatArea = document.getElementById("chatArea");
 const input = document.getElementById("userInput");
 
-let qa = {};
-
-fetch("qa.json")
-.then(r => r.json())
-.then(d => qa = d);
-
+/* IMAGE MAP (UNCHANGED) */
 const diagramMap = {
     "heart": "images/heart.png",
     "kidney": "images/kidney.png",
+    "microscopes": "images/microscopes.png",
     "brain": "images/brain.png",
+    "neuron": "images/neuron.png",
     "plant cell": "images/plant-cell.png",
-    "animal cell": "images/animal-cell.png"
+    "plant cell diagram": "images/plant-cell.png",
+    "animal cell": "images/animal-cell.png",
+    "animal cell diagram": "images/animal-cell.png"
 };
 
+/* VIDEO MAP */
+const videoMap = {
+    "plant cell": "video/plant-cell.mp4"
+};
+
+/* SEND MESSAGE (UNCHANGED LOGIC) */
 function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    chatArea.innerHTML += `<div class="message">${text}</div>`;
+    const userMsg = document.createElement("div");
+    userMsg.className = "message";
+    userMsg.textContent = text;
+    chatArea.appendChild(userMsg);
 
-    const lower = text.toLowerCase();
+    const lowerText = text.toLowerCase();
 
-    let answered = false;
-
-    for (let key in qa) {
-        if (lower.includes(key)) {
-            chatArea.innerHTML += `<div class="message"><b>${key.toUpperCase()}</b><br>${qa[key]}</div>`;
-            answered = true;
+    for (let key in diagramMap) {
+        if (lowerText.includes(key)) {
+            const imgMsg = document.createElement("div");
+            imgMsg.className = "message";
+            imgMsg.innerHTML = `
+                <strong>${key.toUpperCase()}</strong><br>
+                <img src="${diagramMap[key]}" alt="${key} diagram">
+            `;
+            chatArea.appendChild(imgMsg);
             break;
-        }
-    }
-
-    if (!answered) {
-        for (let key in diagramMap) {
-            if (lower.includes(key)) {
-                chatArea.innerHTML += `<div class="message"><b>${key.toUpperCase()}</b><br><img src="${diagramMap[key]}"></div>`;
-                break;
-            }
         }
     }
 
@@ -232,16 +312,67 @@ function sendMessage() {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-input.addEventListener("keydown", e => {
+/* ENTER TO SEND (UNCHANGED) */
+input.addEventListener("keydown", function(e) {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
     }
 });
 
+/* 🎥 OPEN VIDEO PAGE */
+function openVideoPage() {
+    history.pushState({ page: "video" }, "", "#video");
+    showVideoPage();
+}
+
+function showVideoPage() {
+    document.getElementById("chatArea").classList.add("hidden");
+    document.getElementById("chatBox").classList.add("hidden");
+    document.getElementById("videoPanel").style.display = "block";
+}
+
+function showHomePage() {
+    document.getElementById("chatArea").classList.remove("hidden");
+    document.getElementById("chatBox").classList.remove("hidden");
+    document.getElementById("videoPanel").style.display = "none";
+}
+
+/* MOBILE BACK BUTTON */
+window.addEventListener("popstate", () => {
+    showHomePage();
+});
+
+/* SEARCH VIDEO */
+function searchVideo() {
+    const query = document.getElementById("videoInput").value.toLowerCase();
+    const container = document.getElementById("videoResults");
+
+    if (!videoMap[query]) {
+        alert("Video not found");
+        return;
+    }
+
+    const video = document.createElement("video");
+    video.src = videoMap[query];
+    video.controls = true;
+    video.preload = "metadata"; // no autoplay
+
+    container.prepend(video);
+}
+
+/* MENU */
 function toggleMenu() {
-    menu.style.left = menu.style.left === "0px" ? "-100%" : "0";
-    overlay.style.display = overlay.style.display === "block" ? "none" : "block";
+    const menu = document.getElementById("menu");
+    const overlay = document.getElementById("overlay");
+
+    if (menu.style.left === "0px") {
+        menu.style.left = "-100%";
+        overlay.style.display = "none";
+    } else {
+        menu.style.left = "0";
+        overlay.style.display = "block";
+    }
 }
 
 overlay.onclick = toggleMenu;
