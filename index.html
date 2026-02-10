@@ -108,7 +108,7 @@ html, body {
     border: 1px solid #1e293b;
 }
 
-/* Chat box fixed bottom (UNCHANGED) */
+/* Chat box fixed bottom */
 .chat-box {
     position: fixed;
     bottom: 0;
@@ -119,12 +119,24 @@ html, body {
     padding: 10px;
 }
 
+/* MOBILE KEYBOARD FIX */
+@supports (-webkit-touch-callout: none) {
+    .chat-box {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+body.keyboard-open .chat-box {
+    position: absolute;
+    bottom: 0;
+}
+
 .chat-box-inner {
     max-width: 420px;
     margin: 0 auto;
 }
 
-/* Chat input (UNCHANGED) */
+/* Chat input */
 .chat-input {
     display: flex;
     align-items: center;
@@ -146,7 +158,7 @@ html, body {
     color: #e5e7eb;
 }
 
-/* Send button (UNCHANGED) */
+/* Send button */
 .send-btn {
     border: none;
     background: #10a37f;
@@ -232,8 +244,6 @@ html, body {
         <span></span>
         <span></span>
     </div>
-
-    <!-- 🎥 Video Icon -->
     <div class="video-icon" onclick="openVideoPage()">🎥</div>
 </div>
 
@@ -251,7 +261,7 @@ html, body {
 
 </div>
 
-<!-- Chat Input (UNCHANGED) -->
+<!-- Chat Input -->
 <div class="chat-box" id="chatBox">
     <div class="chat-box-inner">
         <div class="chat-input">
@@ -265,7 +275,6 @@ html, body {
 const chatArea = document.getElementById("chatArea");
 const input = document.getElementById("userInput");
 
-/* IMAGE MAP (UNCHANGED) */
 const diagramMap = {
     "heart": "images/heart.png",
     "kidney": "images/kidney.png",
@@ -278,12 +287,10 @@ const diagramMap = {
     "animal cell diagram": "images/animal-cell.png"
 };
 
-/* VIDEO MAP */
 const videoMap = {
     "plant cell": "video/plant-cell.mp4"
 };
 
-/* SEND MESSAGE (UNCHANGED LOGIC) */
 function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
@@ -299,10 +306,7 @@ function sendMessage() {
         if (lowerText.includes(key)) {
             const imgMsg = document.createElement("div");
             imgMsg.className = "message";
-            imgMsg.innerHTML = `
-                <strong>${key.toUpperCase()}</strong><br>
-                <img src="${diagramMap[key]}" alt="${key} diagram">
-            `;
+            imgMsg.innerHTML = `<strong>${key.toUpperCase()}</strong><br><img src="${diagramMap[key]}">`;
             chatArea.appendChild(imgMsg);
             break;
         }
@@ -312,7 +316,6 @@ function sendMessage() {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-/* ENTER TO SEND (UNCHANGED) */
 input.addEventListener("keydown", function(e) {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -320,30 +323,25 @@ input.addEventListener("keydown", function(e) {
     }
 });
 
-/* 🎥 OPEN VIDEO PAGE */
 function openVideoPage() {
     history.pushState({ page: "video" }, "", "#video");
     showVideoPage();
 }
 
 function showVideoPage() {
-    document.getElementById("chatArea").classList.add("hidden");
-    document.getElementById("chatBox").classList.add("hidden");
-    document.getElementById("videoPanel").style.display = "block";
+    chatArea.classList.add("hidden");
+    chatBox.classList.add("hidden");
+    videoPanel.style.display = "block";
 }
 
 function showHomePage() {
-    document.getElementById("chatArea").classList.remove("hidden");
-    document.getElementById("chatBox").classList.remove("hidden");
-    document.getElementById("videoPanel").style.display = "none";
+    chatArea.classList.remove("hidden");
+    chatBox.classList.remove("hidden");
+    videoPanel.style.display = "none";
 }
 
-/* MOBILE BACK BUTTON */
-window.addEventListener("popstate", () => {
-    showHomePage();
-});
+window.addEventListener("popstate", showHomePage);
 
-/* SEARCH VIDEO */
 function searchVideo() {
     const query = document.getElementById("videoInput").value.toLowerCase();
     const container = document.getElementById("videoResults");
@@ -356,12 +354,9 @@ function searchVideo() {
     const video = document.createElement("video");
     video.src = videoMap[query];
     video.controls = true;
-    video.preload = "metadata"; // no autoplay
-
     container.prepend(video);
 }
 
-/* MENU */
 function toggleMenu() {
     const menu = document.getElementById("menu");
     const overlay = document.getElementById("overlay");
@@ -376,6 +371,23 @@ function toggleMenu() {
 }
 
 overlay.onclick = toggleMenu;
+
+/* MOBILE KEYBOARD HANDLER */
+let lastHeight = window.innerHeight;
+window.addEventListener("resize", () => {
+    const diff = lastHeight - window.innerHeight;
+
+    if (diff > 150) {
+        document.body.classList.add("keyboard-open");
+        setTimeout(() => {
+            input.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+    } else {
+        document.body.classList.remove("keyboard-open");
+    }
+
+    lastHeight = window.innerHeight;
+});
 </script>
 
 </body>
