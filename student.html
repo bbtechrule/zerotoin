@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard | zerotoin</title>
+</head>
+<body>
+
+<h2>Welcome Student</h2>
+
+<div id="videos"></div>
+
+<script>
+fetch("https://YOUR-BACKEND-URL/videos")
+.then(res => res.json())
+.then(data => {
+  let box = document.getElementById("videos");
+  data.forEach(v => {
+    box.innerHTML += `
+      <h3>${v.title}</h3>
+      <iframe width="300" height="200" src="${v.link.replace("watch?v=","embed/")}"></iframe>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>
