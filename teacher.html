@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teacher Panel | zerotoin</title>
+</head>
+<body>
+
+<h2>Teacher Upload Panel</h2>
+
+<input id="title" placeholder="Video Title"><br><br>
+<input id="link" placeholder="YouTube Unlisted Link"><br><br>
+
+<button onclick="upload()">Upload Video</button>
+
+<script>
+function upload(){
+  fetch("https://YOUR-BACKEND-URL/upload",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      title: document.getElementById("title").value,
+      link: document.getElementById("link").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => alert("Uploaded Successfully"));
+}
+</script>
+
+</body>
+</html>
