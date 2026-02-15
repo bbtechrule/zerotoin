@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+
+<script>
+const API="https://zerotoin-backend.onrender.com";
+
+async function login(){
+    const res = await fetch(API+"/api/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            email:email.value,
+            password:password.value
+        })
+    });
+    const data = await res.json();
+    if(data.success){
+        if(data.role==="teacher") location="upload.html";
+        else location="index.html";
+    } else alert("Invalid Login");
+}
+</script>
+</body>
+</html>
