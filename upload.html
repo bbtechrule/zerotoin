@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Upload Video</title></head>
+<body>
+<h2>Teacher Upload Panel</h2>
+<input id="title" placeholder="Video Title"><br>
+<input id="url" placeholder="Video URL"><br>
+<button onclick="upload()">Upload</button>
+
+<script>
+const API="https://zerotoin-backend.onrender.com";
+
+async function upload(){
+    await fetch(API+"/api/upload",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            title:title.value,
+            url:url.value
+        })
+    });
+    alert("Video Uploaded");
+}
+</script>
+</body>
+</html>
