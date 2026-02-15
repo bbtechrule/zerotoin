@@ -1,25 +1,86 @@
 <!DOCTYPE html>
-<html>
-<head><title>Student Learning</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Videos</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        header {
+            background: #020617;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            background: #334155;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            margin: 10px 0 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
 <body>
-<h2>Study Videos</h2>
-<div id="videos"></div>
 
-<script>
-const API="https://zerotoin-backend.onrender.com";
+<header>Study Videos</header>
 
-async function loadVideos(){
-    const res = await fetch(API+"/api/videos");
-    const data = await res.json();
-    data.videos.forEach(v=>{
-        const video=document.createElement("video");
-        video.src=v.url;
-        video.controls=true;
-        video.style.width="100%";
-        document.getElementById("videos").appendChild(video);
-    });
-}
-loadVideos();
-</script>
+<div class="container">
+
+    <div class="card">
+        <img src="images/bio.jpg">
+        <h3>Biotechnology</h3>
+    </div>
+
+    <div class="card">
+        <img src="images/chem.jpg">
+        <h3>Chemistry</h3>
+    </div>
+
+    <div class="card">
+        <img src="images/phy.jpg">
+        <h3>Physics</h3>
+    </div>
+
+    <div class="card">
+        <img src="images/math.jpg">
+        <h3>Mathematics</h3>
+    </div>
+
+</div>
+
 </body>
 </html>
