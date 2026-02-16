@@ -1,86 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Videos</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zerotoin - Study Videos</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: #fff;
-        }
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+}
 
-        header {
-            background: #020617;
-            padding: 15px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
+/* App layout */
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
 
-        .container {
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-        }
+/* Header */
+.header {
+    height: 55px;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    border-bottom: 1px solid #1e293b;
+    flex-shrink: 0;
+}
 
-        .card {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* Menu button */
+.menu-btn {
+    width: 30px;
+    cursor: pointer;
+}
 
-        .card:hover {
-            transform: scale(1.05);
-            background: #334155;
-        }
+.menu-btn span {
+    display: block;
+    height: 4px;
+    background: #e5e7eb;
+    margin: 5px 0;
+    border-radius: 2px;
+}
 
-        .card img {
-            width: 100%;
-            border-radius: 10px;
-        }
+/* Video icon */
+.video-icon {
+    font-size: 22px;
+    cursor: pointer;
+}
 
-        .card h3 {
-            margin: 10px 0 0;
-            font-size: 16px;
-        }
-    </style>
+/* Side menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 250px;
+    height: 100%;
+    background: #020617;
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.side-menu a {
+    display: block;
+    color: #e5e7eb;
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    z-index: 999;
+}
+
+/* Chat area */
+.chat-area {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+/* Message bubble */
+.message {
+    background: #020617;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 90%;
+}
+
+.message img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 8px;
+    border: 1px solid #1e293b;
+}
+
+/* Chat box */
+.chat-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #020617;
+    border-top: 1px solid #1e293b;
+    padding: 10px;
+}
+
+.chat-box-inner {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+/* Chat input */
+.chat-input {
+    display: flex;
+    align-items: center;
+    background: #020617;
+    border-radius: 25px;
+    padding: 8px;
+    border: 1px solid #1e293b;
+}
+
+.chat-input textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    background: transparent;
+    color: #e5e7eb;
+}
+
+/* Send button */
+.send-btn {
+    border: none;
+    background: #10a37f;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Video page */
+.video-panel {
+    display: none;
+    flex: 1;
+    background: #020617;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.video-search {
+    display: flex;
+    gap: 8px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.video-search input {
+    flex: 1;
+    padding: 10px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    color: #e5e7eb;
+    border-radius: 20px;
+}
+
+.video-search button {
+    background: #10a37f;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+.video-results {
+    max-width: 600px;
+    margin: 15px auto 0;
+}
+
+.video-results iframe, 
+.video-results video {
+    width: 100%;
+    height: 230px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #1e293b;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
+</style>
 </head>
 
 <body>
 
-<header>Study Videos</header>
+<div class="app">
 
-<div class="container">
+<div class="side-menu" id="menu">
+    <a href="index.html">🏠 Home</a>
+    <a href="login.html">🔑 Login</a>
+    <a href="register.html">📝 Register</a>
+</div>
 
-    <div class="card">
-        <img src="images/bio.jpg">
-        <h3>Biotechnology</h3>
+<div class="overlay" id="overlay"></div>
+
+<div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
     </div>
+    <div class="video-icon" onclick="openVideoPage()">🎥</div>
+</div>
 
-    <div class="card">
-        <img src="images/chem.jpg">
-        <h3>Chemistry</h3>
+<div class="video-panel" id="videoPanel">
+    <div class="video-search">
+        <input type="text" id="videoInput" placeholder="Search video...">
+        <button onclick="searchVideo()">🔍</button>
     </div>
+    <div class="video-results" id="videoResults"></div>
+</div>
 
-    <div class="card">
-        <img src="images/phy.jpg">
-        <h3>Physics</h3>
-    </div>
-
-    <div class="card">
-        <img src="images/math.jpg">
-        <h3>Mathematics</h3>
-    </div>
+<div class="chat-area" id="chatArea"></div>
 
 </div>
+
+<div class="chat-box" id="chatBox">
+    <div class="chat-box-inner">
+        <div class="chat-input">
+            <textarea id="userInput" rows="1" placeholder="Ask something..."></textarea>
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = "https://zerotoin-backend.onrender.com";
+
+const diagramMap = {
+    "heart": "images/heart.png",
+    "kidney": "images/kidney.png",
+    "brain": "images/brain.png",
+    "neuron": "images/neuron.png",
+    "plant cell": "images/plant-cell.png",
+    "animal cell": "images/animal-cell.png"
+};
+
+function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+
+    chatArea.innerHTML += `<div class="message">${text}</div>`;
+
+    for (let key in diagramMap) {
+        if (text.toLowerCase().includes(key)) {
+            chatArea.innerHTML += `
+                <div class="message">
+                    <b>${key.toUpperCase()}</b><br>
+                    <img src="${diagramMap[key]}">
+                </div>`;
+        }
+    }
+
+    userInput.value = "";
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function openVideoPage() {
+    chatArea.classList.add("hidden");
+    chatBox.classList.add("hidden");
+    videoPanel.style.display = "block";
+}
+
+window.addEventListener("popstate", () => {
+    chatArea.classList.remove("hidden");
+    chatBox.classList.remove("hidden");
+    videoPanel.style.display = "none";
+});
+
+function searchVideo() {
+    const query = videoInput.value.toLowerCase();
+    videoResults.innerHTML = "<p>Loading...</p>";
+
+    fetch(API + "/api/videos")
+    .then(res => res.json())
+    .then(data => {
+        videoResults.innerHTML = "";
+        const results = data.videos.filter(v => v.title.toLowerCase().includes(query));
+
+        if (!results.length) {
+            videoResults.innerHTML = "<p>No videos found</p>";
+            return;
+        }
+
+        results.forEach(v => {
+            let link = v.url;
+            if (link.includes("youtube")) {
+                link = link.replace("watch?v=", "embed/");
+                videoResults.innerHTML += `<h3>${v.title}</h3><iframe src="${link}" allowfullscreen></iframe>`;
+            } else {
+                videoResults.innerHTML += `<h3>${v.title}</h3><video src="${link}" controls></video>`;
+            }
+        });
+    });
+}
+
+function toggleMenu() {
+    menu.style.left = menu.style.left === "0px" ? "-100%" : "0";
+    overlay.style.display = menu.style.left === "0px" ? "block" : "none";
+}
+overlay.onclick = toggleMenu;
+</script>
 
 </body>
 </html>
