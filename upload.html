@@ -1,17 +1,91 @@
 <!DOCTYPE html>
-<html>
-<head><title>Upload Video</title></head>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Upload</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:#0f172a;
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.panel{
+    background:#020617;
+    padding:25px;
+    width:100%;
+    max-width:380px;
+    border-radius:10px;
+    color:#e5e7eb;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:6px;
+    font-size:15px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#10a37f;
+    border:none;
+    color:white;
+    font-size:16px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0d8f6f;
+}
+
+.logout{
+    margin-top:10px;
+    background:#ef4444;
+}
+
+</style>
+</head>
+
 <body>
+
+<div class="panel">
 <h2>Teacher Upload Panel</h2>
-<input id="title" placeholder="Video Title"><br>
-<input id="url" placeholder="Video URL"><br>
-<button onclick="upload()">Upload</button>
+
+<input id="title" placeholder="Video Title">
+<input id="url" placeholder="Video URL">
+
+<button onclick="upload()">Upload Video</button>
+<button class="logout" onclick="logout()">Logout</button>
+
+</div>
 
 <script>
 const API="https://zerotoin-backend.onrender.com";
 
 async function upload(){
-    await fetch(API+"/api/upload",{
+
+    if(!title.value || !url.value){
+        alert("Please fill all fields");
+        return;
+    }
+
+    const res = await fetch(API+"/api/upload",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
@@ -19,8 +93,22 @@ async function upload(){
             url:url.value
         })
     });
-    alert("Video Uploaded");
+
+    const data = await res.json();
+
+    if(data.success){
+        alert("Video Uploaded Successfully");
+        title.value="";
+        url.value="";
+    } else {
+        alert("Upload Failed");
+    }
+}
+
+function logout(){
+    location="login.html";
 }
 </script>
+
 </body>
 </html>
