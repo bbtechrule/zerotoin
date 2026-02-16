@@ -219,8 +219,7 @@ html, body {
 
 <div class="side-menu" id="menu">
     <a href="index.html">🏠 Home</a>
-    <a href="login.html">🔑 Login</a>
-    <a href="register.html">📝 Register</a>
+    <a href="#" onclick="logout()">🚪 Logout</a>
 </div>
 
 <div class="overlay" id="overlay"></div>
@@ -329,6 +328,13 @@ function toggleMenu() {
     overlay.style.display = menu.style.left === "0px" ? "block" : "none";
 }
 overlay.onclick = toggleMenu;
+
+function logout() {
+    alert("You have been logged out!");
+    // Example: clear localStorage or cookies if needed
+    // localStorage.clear();
+    window.location.href = "index.html";
+}
 </script>
 
 </body>
