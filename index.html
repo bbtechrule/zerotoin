@@ -1,21 +1,257 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>zerotoin - Study Videos</title>
-<!-- CSS and style same as your previous modified code -->
+
 <style>
-/* ... your previous CSS from index.html ... */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+    overflow-x: hidden;
+}
+
+/* Sign-up overlay */
+#signupOverlay {
+    position: fixed;
+    inset: 0;
+    background: #0f172a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+.signup-box {
+    background: #020617;
+    padding: 25px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+.signup-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+}
+.signup-box button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-email { background: #10a37f; color: white; }
+.btn-google { background: #4285F4; color: white; }
+
+/* App layout */
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+.header {
+    height: 55px;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    border-bottom: 1px solid #1e293b;
+    flex-shrink: 0;
+}
+
+/* Menu button */
+.menu-btn {
+    width: 30px;
+    cursor: pointer;
+}
+.menu-btn span {
+    display: block;
+    height: 4px;
+    background: #e5e7eb;
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+/* Video icon */
+.video-icon {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Side menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 250px;
+    height: 100%;
+    background: #020617;
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+.side-menu a {
+    display: block;
+    color: #e5e7eb;
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    z-index: 999;
+}
+
+/* Chat area */
+.chat-area {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+/* Message bubble */
+.message {
+    background: #020617;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 90%;
+}
+.message img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 8px;
+    border: 1px solid #1e293b;
+}
+
+/* Chat box */
+.chat-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #020617;
+    border-top: 1px solid #1e293b;
+    padding: 10px;
+}
+.chat-box-inner {
+    max-width: 420px;
+    margin: 0 auto;
+}
+.chat-input {
+    display: flex;
+    align-items: center;
+    background: #020617;
+    border-radius: 25px;
+    padding: 8px;
+    border: 1px solid #1e293b;
+}
+.chat-input textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    background: transparent;
+    color: #e5e7eb;
+}
+.send-btn {
+    border: none;
+    background: #10a37f;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Video page */
+.video-panel {
+    display: none;
+    flex: 1;
+    background: #020617;
+    padding: 10px;
+    overflow-y: auto;
+}
+.video-search {
+    display: flex;
+    gap: 8px;
+    max-width: 600px;
+    margin: auto;
+}
+.video-search input {
+    flex: 1;
+    padding: 10px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    color: #e5e7eb;
+    border-radius: 20px;
+}
+.video-search button {
+    background: #10a37f;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+}
+.video-results {
+    max-width: 600px;
+    margin: 15px auto 0;
+}
+.video-results iframe, 
+.video-results video {
+    width: 100%;
+    height: 230px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #1e293b;
+}
+.hidden {
+    display: none !important;
+}
 </style>
 </head>
+
 <body>
 
-<div class="app">
+<!-- Sign-up / Login overlay -->
+<div id="signupOverlay">
+    <div class="signup-box">
+        <h2>Welcome to zerotoin</h2>
+        <input type="email" id="email" placeholder="Email"><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <button class="btn-email" onclick="login()">Continue with Email</button><br>
+        <p style="margin:10px 0;">Or</p>
+        <button class="btn-google" onclick="googleLogin()">Continue with Google</button>
+    </div>
+</div>
+
+<div class="app hidden" id="appUI">
 
 <div class="side-menu" id="menu">
-    <a href="index.html">🏠 Home</a>
+    <a href="#">🏠 Home</a>
     <a href="#" onclick="logout()">🚪 Logout</a>
 </div>
 
@@ -40,7 +276,7 @@
 
 </div>
 
-<div class="chat-box" id="chatBox">
+<div class="chat-box hidden" id="chatBox">
     <div class="chat-box-inner">
         <div class="chat-input">
             <textarea id="userInput" rows="1" placeholder="Ask something..."></textarea>
@@ -50,10 +286,105 @@
 </div>
 
 <script>
-// ... your previous JS from index.html ...
+const API = "https://zerotoin-backend.onrender.com";
+
+const diagramMap = {
+    "heart": "images/heart.png",
+    "kidney": "images/kidney.png",
+    "brain": "images/brain.png",
+    "neuron": "images/neuron.png",
+    "plant cell": "images/plant-cell.png",
+    "animal cell": "images/animal-cell.png"
+};
+
+// Sign-up / login logic
+function login() {
+    const emailVal = document.getElementById("email").value.trim();
+    const passwordVal = document.getElementById("password").value.trim();
+    if(!emailVal || !passwordVal){
+        alert("Fill all fields");
+        return;
+    }
+
+    // Save user to localStorage for this demo
+    localStorage.setItem("loggedInUser", emailVal);
+
+    // Hide signup overlay & show app
+    document.getElementById("signupOverlay").classList.add("hidden");
+    document.getElementById("appUI").classList.remove("hidden");
+    document.getElementById("chatBox").classList.remove("hidden");
+}
+
+function googleLogin() {
+    alert("Google login placeholder");
+    localStorage.setItem("loggedInUser", "google_user");
+    document.getElementById("signupOverlay").classList.add("hidden");
+    document.getElementById("appUI").classList.remove("hidden");
+    document.getElementById("chatBox").classList.remove("hidden");
+}
+
+// Auto-show UI if already logged in
+if(localStorage.getItem("loggedInUser")){
+    document.getElementById("signupOverlay").classList.add("hidden");
+    document.getElementById("appUI").classList.remove("hidden");
+    document.getElementById("chatBox").classList.remove("hidden");
+}
+
+// Chat / video functions
+function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+    chatArea.innerHTML += `<div class="message">${text}</div>`;
+    for (let key in diagramMap) {
+        if (text.toLowerCase().includes(key)) {
+            chatArea.innerHTML += `<div class="message"><b>${key.toUpperCase()}</b><br><img src="${diagramMap[key]}"></div>`;
+        }
+    }
+    userInput.value = "";
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function openVideoPage() {
+    chatArea.classList.add("hidden");
+    chatBox.classList.add("hidden");
+    videoPanel.style.display = "block";
+}
+
+window.addEventListener("popstate", () => {
+    chatArea.classList.remove("hidden");
+    chatBox.classList.remove("hidden");
+    videoPanel.style.display = "none";
+});
+
+function searchVideo() {
+    const query = videoInput.value.toLowerCase();
+    videoResults.innerHTML = "<p>Loading...</p>";
+    fetch(API + "/api/videos")
+    .then(res => res.json())
+    .then(data => {
+        videoResults.innerHTML = "";
+        const results = data.videos.filter(v => v.title.toLowerCase().includes(query));
+        if(!results.length){ videoResults.innerHTML="<p>No videos found</p>"; return; }
+        results.forEach(v => {
+            let link = v.url;
+            if(link.includes("youtube")) link = link.replace("watch?v=", "embed/");
+            videoResults.innerHTML += link.includes("youtube") ? `<h3>${v.title}</h3><iframe src="${link}" allowfullscreen></iframe>` : `<h3>${v.title}</h3><video src="${link}" controls></video>`;
+        });
+    });
+}
+
+function toggleMenu() {
+    menu.style.left = menu.style.left === "0px" ? "-100%" : "0";
+    overlay.style.display = menu.style.left === "0px" ? "block" : "none";
+}
+overlay.onclick = toggleMenu;
+
 function logout() {
+    localStorage.removeItem("loggedInUser");
+    document.getElementById("appUI").classList.add("hidden");
+    document.getElementById("chatBox").classList.add("hidden");
+    document.getElementById("signupOverlay").classList.remove("hidden");
     alert("You have been logged out!");
-    window.location.href = "login.html"; // Redirect to login page
 }
 </script>
 
