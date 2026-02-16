@@ -1,32 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    background: #020617;
+    padding: 25px;
+    width: 100%;
+    max-width: 350px;
+    border-radius: 10px;
+    color: #e5e7eb;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #10a37f;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0d8f6f;
+}
+
+p {
+    text-align: center;
+    margin-top: 10px;
+}
+a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+</style>
 </head>
+
 <body>
+
+<div class="box">
 <h2>Login</h2>
-<input id="email" placeholder="Email"><br>
-<input id="password" type="password" placeholder="Password"><br>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
 <button onclick="login()">Login</button>
+
+<p>Don't have an account? <a href="register.html">Register</a></p>
+</div>
 
 <script>
 const API="https://zerotoin-backend.onrender.com";
 
 async function login(){
+    if(!email.value || !password.value){
+        alert("Please fill all fields");
+        return;
+    }
+
     const res = await fetch(API+"/api/login",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-            email:email.value,
-            password:password.value
+            email: email.value,
+            password: password.value
         })
     });
+
     const data = await res.json();
+
     if(data.success){
-        if(data.role==="teacher") location="upload.html";
-        else location="index.html";
-    } else alert("Invalid Login");
+        if(data.role==="teacher"){
+            location="upload.html";
+        } else {
+            location="index.html";
+        }
+    } else {
+        alert("Invalid Email or Password");
+    }
 }
 </script>
+
 </body>
 </html>
