@@ -1,26 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Student Dashboard | zerotoin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | zerotoin</title>
+
+<style>
+body{
+    margin:0;
+    background:#0f172a;
+    font-family:Arial,sans-serif;
+    color:#e5e7eb;
+}
+
+.header{
+    background:#020617;
+    padding:15px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.video-container{
+    padding:15px;
+    max-width:700px;
+    margin:auto;
+}
+
+.video-card{
+    background:#020617;
+    margin-bottom:15px;
+    padding:12px;
+    border-radius:10px;
+}
+
+.video-card h3{
+    margin:0 0 10px;
+    font-size:16px;
+}
+
+video, iframe{
+    width:100%;
+    height:200px;
+    border-radius:8px;
+    border:1px solid #1e293b;
+}
+
+.logout{
+    margin:15px auto;
+    display:block;
+    width:90%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#ef4444;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-<h2>Welcome Student</h2>
+<div class="header">📚 Student Learning Dashboard</div>
 
-<div id="videos"></div>
+<div class="video-container" id="videos"></div>
+
+<button class="logout" onclick="logout()">Logout</button>
 
 <script>
-fetch("https://YOUR-BACKEND-URL/videos")
-.then(res => res.json())
-.then(data => {
-  let box = document.getElementById("videos");
-  data.forEach(v => {
-    box.innerHTML += `
-      <h3>${v.title}</h3>
-      <iframe width="300" height="200" src="${v.link.replace("watch?v=","embed/")}"></iframe>
-    `;
-  });
-});
+const API = "https://zerotoin-backend.onrender.com";
+
+async function loadVideos(){
+    const res = await fetch(API + "/api/videos");
+    const data = await res.json();
+
+    const box = document.getElementById("videos");
+    box.innerHTML = "";
+
+    if(data.videos.length === 0){
+        box.innerHTML = "<p>No videos uploaded yet.</p>";
+        return;
+    }
+
+    data.videos.forEach(v => {
+
+        if(v.url.includes("youtube.com") || v.url.includes("youtu.be")){
+            const embed = v.url.replace("watch?v=","embed/");
+
+            box.innerHTML += `
+                <div class="video-card">
+                    <h3>${v.title}</h3>
+                    <iframe src="${embed}" allowfullscreen></iframe>
+                </div>
+            `;
+        }
+        else{
+            box.innerHTML += `
+                <div class="video-card">
+                    <h3>${v.title}</h3>
+                    <video controls>
+                        <source src="${v.url}">
+                    </video>
+                </div>
+            `;
+        }
+
+    });
+}
+
+function logout(){
+    location="login.html";
+}
+
+loadVideos();
 </script>
 
 </body>
